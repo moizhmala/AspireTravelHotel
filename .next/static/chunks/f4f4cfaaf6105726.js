@@ -1,0 +1,6 @@
+__turbopack_load_page_chunks__("/bulkuploader", [
+  "static/chunks/cd17c9faf925349b.js",
+  "static/chunks/021770ef0048f0ed.js",
+  "static/chunks/cd8f9af4227f0c6e.js",
+  "static/chunks/turbopack-6736e26bdc1edbdd.js"
+])
