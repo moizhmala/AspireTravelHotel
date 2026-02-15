@@ -1,10 +1,24 @@
 {
   "/_app": "pages/_app.js",
-  "/_document": "pages/_document.js",
   "/_error": "pages/_error.js",
   "/api/exportCSVList": "pages/api/exportCSVList.js",
   "/api/exportProgress": "pages/api/exportProgress.js",
+  "/[env]": "pages/[env].html",
+  "/_document": "pages/_document.js",
+  "/api/exportList": "pages/api/exportList.js",
+  "/api/exportProgressStore": "pages/api/exportProgressStore.js",
+  "/api/exportTemplateDining": "pages/api/exportTemplateDining.js",
+  "/api/getSampleTemplate": "pages/api/getSampleTemplate.js",
+  "/api/hello": "pages/api/hello.js",
+  "/api/helpers/csv": "pages/api/helpers/csv.js",
   "/api/languages": "pages/api/languages.js",
+  "/api/helpers/fetchLanguages": "pages/api/helpers/fetchLanguages.js",
+  "/api/helpers/fetchItemsByLanguage": "pages/api/helpers/fetchItemsByLanguage.js",
   "/api/types": "pages/api/types.js",
-  "/bulkuploader": "pages/bulkuploader.js"
+  "/api/upload1": "pages/api/upload1.js",
+  "/bulkuploader": "pages/bulkuploader.html",
+  "/": "pages/index.html",
+  "/api/uploadheaderfooter": "pages/api/uploadheaderfooter.js",
+  "/api/uploadpicklist": "pages/api/uploadpicklist.js",
+  "/404": "pages/404.html"
 }
