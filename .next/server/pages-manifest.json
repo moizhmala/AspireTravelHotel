@@ -1,0 +1,10 @@
+{
+  "/_app": "pages/_app.js",
+  "/_document": "pages/_document.js",
+  "/_error": "pages/_error.js",
+  "/api/exportCSVList": "pages/api/exportCSVList.js",
+  "/api/exportProgress": "pages/api/exportProgress.js",
+  "/api/languages": "pages/api/languages.js",
+  "/api/types": "pages/api/types.js",
+  "/bulkuploader": "pages/bulkuploader.js"
+}
