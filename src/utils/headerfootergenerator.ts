@@ -68,7 +68,7 @@ const languageMap: LanguageMap = {
 
 async function fetchElementIdMap(contentTypeCodename: string): Promise<Record<string, string>> {
   try {
-    require("fs").appendFileSync("debug.txt", `Fetching element ID map for type: ${config.baseUrl}/${config.projectId}/types/codename/${contentTypeCodename}` + "\n");
+    console.debug( `Fetching element ID map for type: ${config.baseUrl}/${config.projectId}/types/codename/${contentTypeCodename}` + "\n");
     const response = await axios.get(
       `${config.baseUrl}/${config.projectId}/types/codename/${contentTypeCodename}`,
       {
@@ -154,7 +154,7 @@ async function findContentItem(contentItemCodename: string) {
 
 async function findContentItemVariant(contentItemID: string, languageCodename: string) {
   try {
-    require("fs").appendFileSync("debug.txt", `Finding content item variant: ${config.baseUrl}/${config.projectId}/items/${contentItemID}/variants/${languageCodename}` + "\n");
+    console.debug( `Finding content item variant: ${config.baseUrl}/${config.projectId}/items/${contentItemID}/variants/${languageCodename}` + "\n");
     const response = await axios.get(
       `${config.baseUrl}/${config.projectId}/items/${contentItemID}/variants/codename/${languageCodename}`,
       {
@@ -178,10 +178,10 @@ async function deleteExistingDraftVersion (contentItemID: string, languageCodena
     const contentItemVariant =await findContentItemVariant(contentItemID, languageCodename);
 
     //check content item variant workflow step
-    require("fs").appendFileSync("debug.txt", `Current workflow step for ${languageCodename}: ${contentItemVariant.workflow_step?.id || 'N/A'}` + "\n");
+    console.debug( `Current workflow step for ${languageCodename}: ${contentItemVariant.workflow_step?.id || 'N/A'}` + "\n");
 
     if (contentItemVariant.workflow_step?.id === "eee6db3b-545a-4785-8e86-e3772c8756f9") { //draft step id
-      require("fs").appendFileSync("debug.txt", `Deleting existing draft version for: ${config.baseUrl}/${config.projectId}/items/${contentItemID}/variants/codename/${languageCodename}` + "\n"); 
+      console.debug( `Deleting existing draft version for: ${config.baseUrl}/${config.projectId}/items/${contentItemID}/variants/codename/${languageCodename}` + "\n"); 
       const response = await axios.delete( 
         `${config.baseUrl}/${config.projectId}/items/${contentItemID}/variants/codename/${languageCodename}`,
         { 
@@ -191,7 +191,7 @@ async function deleteExistingDraftVersion (contentItemID: string, languageCodena
           },
         } 
       );  
-      require("fs").appendFileSync("debug.txt", `✅ Deleted existing draft version for language: ${languageCodename}` + "\n");
+      console.debug( `✅ Deleted existing draft version for language: ${languageCodename}` + "\n");
       return response.data; 
     } 
   } catch (error) {
@@ -216,10 +216,10 @@ async function createContentItem(itemName: string, itemCodename: string, content
         },
       }
     );
-    require("fs").appendFileSync("debug.txt", `✅ Created content item: ${itemCodename}` + "\n");
+    console.debug( `✅ Created content item: ${itemCodename}` + "\n");
     return response.data;
   } catch (error) {
-    require("fs").appendFileSync("debug.txt", `Error creating content item: ${error}` + "\n");
+    console.debug( `Error creating content item: ${error}` + "\n");
     throw error;
   }
 }
@@ -232,7 +232,7 @@ async function createLanguagVariant(
 
    //let contentItem = await findContentItemVariant(itemId, languageId);
     //if (contentItem) {
-       //require("fs").appendFileSync("debug.txt", `Creating language variant ${config.baseUrl}/${config.projectId}/items/${itemId}/variants/${languageId}/new-version` + "\n");
+       //console.debug( `Creating language variant ${config.baseUrl}/${config.projectId}/items/${itemId}/variants/${languageId}/new-version` + "\n");
       const response = await axios.put(
         `${config.baseUrl}/${config.projectId}/items/${itemId}/variants/codename/${languageId}/new-version`,
         {}, // empty body
@@ -251,7 +251,7 @@ async function createLanguagVariant(
     
   } catch (error) {
     //console.error(`Error creating language variant: ${error}`);
-    require("fs").appendFileSync("debug.txt", `Error creating language variant: ${error}` + "\n");
+    console.debug( `Error creating language variant: ${error}` + "\n");
     throw error;
   }
 }
@@ -264,7 +264,7 @@ async function addLanguageVariant( itemId: string, languageId: string, templateN
   
 ) {
   try {
-    require("fs").appendFileSync("debug.txt", `Adding language variant ${config.baseUrl}/${config.projectId}/items/${itemId}/variants/${languageId}` + "\n");  
+    console.debug( `Adding language variant ${config.baseUrl}/${config.projectId}/items/${itemId}/variants/${languageId}` + "\n");  
 
     const customHeaders = {
       'Content-Type': 'application/json',
@@ -318,7 +318,7 @@ async function addLanguageVariant( itemId: string, languageId: string, templateN
       
     };
 
-    require("fs").appendFileSync("debug.txt", `requestBody to add: ${JSON.stringify(requestBody, null, 2)}` + "\n");
+    console.debug( `requestBody to add: ${JSON.stringify(requestBody, null, 2)}` + "\n");
 
     const response = await axios.put(
       `${config.baseUrl}/${config.projectId}/items/${itemId}/variants/${languageId}`,
@@ -327,15 +327,15 @@ async function addLanguageVariant( itemId: string, languageId: string, templateN
       
     );
 
-    require("fs").appendFileSync("debug.txt", `✅ Variant update success for language ${languageId}` + "\n");
+    console.debug( `✅ Variant update success for language ${languageId}` + "\n");
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
                 // Handle axios errors
-                require("fs").appendFileSync("debug.txt", `Error Adding language variant | Axios error: ${error}` + "\n");
+                console.debug( `Error Adding language variant | Axios error: ${error}` + "\n");
             } else {
                 // Handle non-axios errors
-                require("fs").appendFileSync("debug.txt", `Error Adding language variant | Non-axios error: ${error}` + "\n");
+                console.debug( `Error Adding language variant | Non-axios error: ${error}` + "\n");
             }
     throw error;
   }
@@ -426,11 +426,10 @@ async function publishLanguageVariant(itemId: string, languageId: string) {
         },
       }
     );
-    require("fs").appendFileSync("debug.txt", `✅ Published language variant ${languageId}` + "\n");
+    console.debug( `✅ Published language variant ${languageId}` + "\n");
     return response.data;
   } catch (error) {
-    //console.error(`Error publishing language variant: ${error}`);
-    require("fs").appendFileSync("debug.txt", `Error publishing language variant: ${error}` + "\n");
+    console.warn( `Error publishing language variant: ${error}` + "\n");
     throw error;
   }
 }
@@ -537,8 +536,7 @@ export async function processXlsxFile(
     rawElementIdMap = await fetchElementIdMap(contentTypeCodename);
     //console.log("🗺️ Element ID Map Fetched:", rawElementIdMap);
   } catch (error) {
-    //console.error("❌ Failed to fetch element ID map:", error);
-    require("fs").appendFileSync("debug.txt", "❌ Failed to fetch element ID map:" + error + "\n");
+    console.error("❌ Failed to fetch element ID map:", error);
     throw error; // Important: rethrow to propagate
   }
 
@@ -546,11 +544,10 @@ export async function processXlsxFile(
   for (const [key, value] of Object.entries(rawElementIdMap)) {
     if (typeof value === "string") {
       const normalizedKey = key.replace(/\s+/g, " ").trim();
-      require("fs").appendFileSync("debug.txt", `🔑 Normalizing key: "${key}" to "${normalizedKey}" with value: ${value}` + "\n");
+      console.debug(`🔑 Normalizing key: "${key}" to "${normalizedKey}" with value: ${value}`);
       elementIdMap[normalizedKey] = value;
     } else {
-      //console.warn(`⚠️ Unexpected non-string value for key: ${key}`, value);
-      require("fs").appendFileSync("debug.txt", `⚠️ Unexpected non-string value for key: ${key}` + value + "\n");
+      console.warn(`⚠️ Unexpected non-string value for key: ${key}`, value);
     }
   }
 
@@ -573,16 +570,13 @@ export async function processXlsxFile(
 
     try {
       let contentItem = await findContentItem(itemCodename);
-      //console.log(`🔍 Searching for content item: ${itemCodename}`);
-      require("fs").appendFileSync("debug.txt", `🔍 Searching for content item: ${itemCodename}` + "\n");
+      console.log(`🔍 Searching for content item: ${itemCodename}`);
       
       if (!contentItem) {
-        //console.log(`🔧 Content item does not exist. Creating: ${itemCodename}`);
-        require("fs").appendFileSync("debug.txt", `🔧 Content item does not exist. Creating: ${itemCodename}` + "\n");
+        console.log(`🔧 Content item does not exist. Creating: ${itemCodename}`);
         contentItem = await createContentItem(itemName, itemCodename, contentTypeCodename);
       } else {
-        //console.log(`🔄 Content item exists. Updating: ${itemCodename}`);
-        require("fs").appendFileSync("debug.txt", `🔄 Content item exists. Updating: ${itemCodename}` + "\n");
+        console.log(`🔄 Content item exists. Updating: ${itemCodename}`);
       }
 
       const reviewStepId =
@@ -593,17 +587,14 @@ export async function processXlsxFile(
       const languageNameElementMap: Record<string, string> = {};
       const languageClientIDElementMap: Record<string, string> = {};
       const languageProgramIDElementMap: Record<string, string> = {};
-      //console.log(`📄 Check point 1 Processing item: ${itemName} (${itemCodename})`);
       
       for (const { language, variable, columnIndex } of languageVariablePairs) {
         const value = row[columnIndex]; //HTML, CSS, Script values
-        require("fs").appendFileSync("debug.txt", `📄 Check point 1 Processing item: ${itemName} (${itemCodename}) | ${language.trim()} | Columnn: ${columnIndex} | Variable: ${variable} ` + "\n");
+        console.debug(`📄 Check point 1 Processing item: ${itemName} (${itemCodename}) | ${language.trim()} | Columnn: ${columnIndex} | Variable: ${variable} `)
         const languageInfo = languageMap[language.trim()];
-        //console.log(`🔎 Processing language: "${language}" with variable: "${variable}" and value: "${value}"`);
-        require("fs").appendFileSync("debug.txt", `🔎 Processing language: "${languageInfo.codename}" | "${languageInfo.id}" and value: XXX` + "\n");
+        console.debug(`🔎 Processing language: "${language}" with variable: "${variable}" and value: "${value}"`);
         if (!languageInfo) {
-          //console.warn(`⚠️ Language not found: "${language}"`);
-          require("fs").appendFileSync("debug.txt", `⚠️ Language not found: "${language}"` + "\n");
+          console.warn(`⚠️ Language not found: "${language}"`);
           continue;
         }
 
@@ -634,13 +625,11 @@ export async function processXlsxFile(
         const elementId = elementIdMap[normalizedVariable];
 
         if (!elementId) {
-          //console.warn(`⚠️ Element ID not found for variable: "${normalizedVariable}"`);
-          require("fs").appendFileSync("debug.txt", `⚠️ Element ID not found for variable: "${normalizedVariable}"` + "\n");
+          console.warn(`⚠️ Element ID not found for variable: "${normalizedVariable}"`);
           continue;
         }
         if (!languageId) {
-          //console.warn(`⚠️ Language code not found for: "${language}"`);
-          require("fs").appendFileSync("debug.txt", `⚠️ Language code not found for: "${language}"` + "\n");
+          console.warn(`⚠️ Language code not found for: "${language}"`);
           continue;
         }
 
@@ -651,7 +640,7 @@ export async function processXlsxFile(
         //const htmlValue = String(value || "").trim();
         let safeHtml = String(value || "").trim();
         try {
-          require("fs").appendFileSync("debug.txt", `🔎 Processing value for variable "${normalizedVariable}": ` + "\n");
+          console.debug(`🔎 Processing value for variable "${normalizedVariable}": `)
 
           if (normalizedVariable === "Header HTML" || normalizedVariable === "Footer HTML" || normalizedVariable === "Header CSS" || normalizedVariable === "Footer CSS") {
           safeHtml =  compressAndEscapeHtml(String(value || "")); // Compress and escape HTML value
@@ -660,15 +649,6 @@ export async function processXlsxFile(
           console.error("❌ Failed to write to debug.txt:", e);
         }
         
-
-
-// languageElementMap[languageId].push({
-//   element: { id: elementId },
-//   value: { html: htmlValue },
-//   type: "custom" // Explicitly typed and always structured the same
-// });
-//require("fs").appendFileSync("debug.txt", `📥 Adding element: ${normalizedVariable} with ID: ${elementId} for language: ${languageId} with value: ${safeHtml}` + "\n");
-
 
 if (!languageElementMap[languageInfo.id]) {
   languageElementMap[languageInfo.id] = [];
@@ -682,20 +662,6 @@ if (!languageElementMap[languageInfo.id]) {
   }
 
     
-
-        // Send update per language
-        // for (const [langCodename, elements] of Object.entries(languageElementMap)) {
-        //   const languageCodename = languageIdToCodenameMap[langCodename];
-        //   const langEntry = languageMap[language.trim()]; // 👈 get the language object
-
-          
-        // }
-        //require("fs").appendFileSync("debug.txt", `📄 Check point 2 Completed element mapping for item: ${itemName} (${itemCodename}) | ${language.trim()} | ${languageId} | Columnn: ${columnIndex} | Variable: ${variable} ` + "\n");
-        
-        //await createLanguagVariant(contentItem.id, languageId); // ✅ pass correct ID
-          //require("fs").appendFileSync("debug.txt", "languageElementMap: " + languageElementMap[langEntry.id] + "\n");
-        //await addLanguageVariant(contentItem.id, languageId, templateSuffix, languageNameElementMap[languageId], languageClientIDElementMap[languageId], languageProgramIDElementMap[languageId], languageElementMap[languageId]); // ⚠️ must still use codename here
-
         if (userEnvVariable === "prod") {
             //await transitionLanguageToReview(contentItem.id, langEntry.codename, reviewStepId);
           }
@@ -705,7 +671,6 @@ if (!languageElementMap[languageInfo.id]) {
         
       } //languageVariablePairs for loop ends
 
-      //require("fs").appendFileSync("debug.txt", `languageElementMap: ${JSON.stringify(languageElementMap, null, 2)}` + "\n");
 
 
       processedCount++;      // Now, iterate over each language and update/create variants
@@ -713,23 +678,23 @@ if (!languageElementMap[languageInfo.id]) {
       for (const [langId, elements] of Object.entries(languageElementMap)) {
 
         if (elements.length === 0) {
-          require("fs").appendFileSync("debug.txt", `⚠️ No elements to process for language ID: ${langId}. Skipping.` + "\n");
+          console.debug( `⚠️ No elements to process for language ID: ${langId}. Skipping.` + "\n");
           continue; // Skip if no elements to process
         }
 
         const languageCodename = languageIdToCodenameMap[langId];
-        require("fs").appendFileSync("debug.txt", `📤 Updating/Creating variant for language: ${languageCodename} with elements: ` + "\n"); //${JSON.stringify(elements, null, 2)}
+        console.debug( `📤 Updating/Creating variant for language: ${languageCodename} with elements: ` + "\n"); //${JSON.stringify(elements, null, 2)}
       
 
         const variantExists = await doesLanguageVariantExist(contentItem.id, languageCodename);
-        require("fs").appendFileSync("debug.txt", `Variant details for language ${languageCodename}: ${JSON.stringify(variantExists, null, 2)}` + "\n");
+        console.debug( `Variant details for language ${languageCodename}: ${JSON.stringify(variantExists, null, 2)}` + "\n");
         
         if (!variantExists) {
-          require("fs").appendFileSync("debug.txt", `🔧 Variant does not exist for language: ${languageCodename}. Creating new variant.` + "\n");
+          console.debug( `🔧 Variant does not exist for language: ${languageCodename}. Creating new variant.` + "\n");
           //await createContentItem(itemName, itemCodename, contentTypeCodename);
           //await createLanguagVariant(contentItem.id, languageCodename);
         } else {
-          require("fs").appendFileSync("debug.txt", `🔄 Variant exists for language: ${languageCodename}. Updating existing variant.` + "\n");
+          console.debug( `🔄 Variant exists for language: ${languageCodename}. Updating existing variant.` + "\n");
           //delete existing draft version if any
           await deleteExistingDraftVersion (contentItem.id, languageCodename, variantExists);
 
@@ -755,14 +720,14 @@ if (!languageElementMap[languageInfo.id]) {
         await publishLanguageVariant(contentItem.id, languageCodename);
       }
 
-      require("fs").appendFileSync("debug.txt", `✅ Successfully processed item: ${originalName}` + "\n");
+      console.debug( `✅ Successfully processed item: ${originalName}` + "\n");
       
     } catch (error) {
       const err = error as AxiosError;
       const response = err?.response?.data as ApiErrorResponse;
       const reason = response?.validation_errors?.[0]?.message || err.message;
       //console.error(`❌ Error processing item: ${originalName}: ${reason}`);
-      require("fs").appendFileSync("debug.txt", `❌ Error processing item: ${originalName}: ${reason}` + "\n");
+      console.debug( `❌ Error processing item: ${originalName}: ${reason}` + "\n");
       unprocessedRecords.push({ name: originalName, reason });
       unprocessedCount++; 
     }

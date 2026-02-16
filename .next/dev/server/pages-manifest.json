@@ -1,0 +1,7 @@
+{
+  "/_app": "pages/_app.js",
+  "/_document": "pages/_document.js",
+  "/api/languages": "pages/api/languages.js",
+  "/api/types": "pages/api/types.js",
+  "/bulkuploader": "pages/bulkuploader.js"
+}

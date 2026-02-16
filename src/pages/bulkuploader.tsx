@@ -62,7 +62,13 @@ export default function Home(): JSX.Element {
         const res = await fetch("/api/types");
         const data = await res.json();
         setTypes(data.types || []);
-      } finally {
+      } 
+      catch(error)
+      {
+        console.error("❌ Failed to fetch languages", error);
+        throw error; 
+      }
+      finally {
         setFetchingTypes(false);
       }
     };
@@ -75,7 +81,13 @@ export default function Home(): JSX.Element {
         const res = await fetch("/api/languages");
         const data = await res.json();
         setLanguages(data.languages || []);
-      } finally {
+      } 
+      catch(error)
+      {
+        console.error("❌ Failed to fetch languages", error);
+        throw error; 
+      }
+      finally {
         setFetchingLanguages(false);
       }
     };
